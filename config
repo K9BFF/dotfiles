@@ -14,10 +14,29 @@ set $mod Mod4
 new_window 1pixel
 
 hide_edge_borders both
+new_window none
+smart_borders on
 
 execc_always compton
 
 exec_always feh --bg-fill wallpaper.jpeg
+
+set $base00 #101218
+set $base01 #1f222d
+set $base02 #252936
+set $base03 #7780a1
+set $base04 #C0C5CE
+set $base05 #d1d4e0
+set $base06 #C9CCDB
+set $base07 #ffffff
+set $base08 #ee829f
+set $base09 #f99170
+set $base0A #ffefcc
+set $base0B #a5ffe1
+set $base0C #97e0ff
+set $base0D #97bbf7
+set $base0E #c0b7f9
+set $base0F #fcc09e
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -41,7 +60,7 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -b -fn 'Fira Mono for Powerline 8' -nb '#293439'
+bindsym $mod+d exec dmenu_run -b -fn 'Fira Mono for Powerline 8' -nb '$base01'
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -154,24 +173,32 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Widow Colours
+#                         border  background text    indicator
+  client.focused          $base01 $base01    $base07 $base0F
+  client.focused_inactive $base02 $base02    $base03 $base0F
+  client.unfocused        $base02 $base02    $base03 $base0F
+  client.urgent           $base02 $base08    $base00 $base0F
+
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
 	position top
         status_command i3status
-	colors {
-	background #293439
-	statusline #ffffff
-	focused_workspace #293439 #ffffff
-	active_workspace #293438 #ffffff
-	urgent_workspace #ffffff #99000
-	}
-}
 
-client.focused #293439 #293439 #293439
-client.unfocused #444444 #444444 #315858
-client.focused_inactive #444444 #444444 #2c2c2f
-client.urgent #383a3b #383a3b #ee0000
+    colors {
+      separator $base01
+      background $base01
+      statusline $base05
+#                        border  background text
+      focused_workspace  $base01 $base01    $base07
+      active_workspace   $base01 $base02    $base03
+      inactive_workspace $base01 $base01    $base03
+      urgent_workspace   $base01 $base01    $base08
+    }
+
+}
 
 set $mode_gaps Gaps: (o) outer, (i) inner
 set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
@@ -214,3 +241,8 @@ gaps inner 10
 gaps outer 5
 
 bindsym $mod+shift+x exec lock
+
+# Volume & Media Bindings
+  bindsym $mod+leftarrow exec --no-startup-id amixer-ctl down
+  bindsym XF86AudioRaiseVolume exec --no-startup-id pulseaudio-ctl up
+  bindsym XF86AudioMute exec --no-startup-id pulseaudio-ctl mute
